@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.algorithms.TextComparator &#8212; Edulytica 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.algorithms.TextComparator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># importing standard libraries</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="c1"># importing external libraries</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+
+<span class="c1"># getting stopwords</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;russian&#39;</span><span class="p">)</span>
+<span class="c1"># getting punctuation marks</span>
+<span class="n">punctuation_marks</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span>
+
+
+<span class="c1"># a class for working with texts</span>
+<div class="viewcode-block" id="TextComparator">
+<a class="viewcode-back" href="../../../src.algorithms.html#src.algorithms.TextComparator.TextComparator">[docs]</a>
+<span class="k">class</span> <span class="nc">TextComparator</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TextComparator.count_percent_of_transformed_words">
+<a class="viewcode-back" href="../../../src.algorithms.html#src.algorithms.TextComparator.TextComparator.count_percent_of_transformed_words">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">count_percent_of_transformed_words</span><span class="p">(</span><span class="n">input_text_before_changing</span><span class="p">,</span> <span class="n">input_text_after_changing</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">stop_words</span><span class="p">,</span> <span class="n">punctuation_marks</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">input_text_before_changing</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">input_text_after_changing</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input must be a strings&quot;</span><span class="p">)</span>
+
+        <span class="c1"># getting all the words of the text</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">input_text_before_changing</span><span class="p">,</span> <span class="n">input_text_after_changing</span><span class="p">:</span>
+            <span class="n">split_text</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">words_of_text</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">part_of_text</span> <span class="ow">in</span> <span class="n">split_text</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">part_of_text</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+                    <span class="n">part_of_text_without_punctuation_marks</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part_of_text</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">punctuation_marks</span><span class="p">:</span>
+                            <span class="n">part_of_text_without_punctuation_marks</span> <span class="o">+=</span> <span class="n">p</span>
+                    <span class="n">words_of_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part_of_text_without_punctuation_marks</span><span class="p">)</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words_of_text</span><span class="p">)</span>
+
+        <span class="n">words_of_text_before_changing</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">words_of_text_after_changing</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># criterion 1: number of added words</span>
+        <span class="n">count_of_added_words</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words_of_text_after_changing</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">words_of_text_before_changing</span><span class="p">:</span>
+                <span class="n">count_of_added_words</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># criterion 2: number of deleted words</span>
+        <span class="n">count_of_deleted_words</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words_of_text_before_changing</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">words_of_text_after_changing</span><span class="p">:</span>
+                <span class="n">count_of_deleted_words</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(((</span><span class="n">count_of_added_words</span> <span class="o">+</span> <span class="n">count_of_deleted_words</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">words_of_text_after_changing</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_of_text_before_changing</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Edulytica</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Edulytica Team.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
